@@ -1,0 +1,215 @@
+#include "ACPI.h"
+
+#define offsetof(s,m) (UINT32)(UINT64)&(((s *)0)->m)
+
+#pragma pack(push, 1)
+
+ACPI_PPTT Pptt =
+{
+    // Header
+    {
+        ACPI_PPTT_SIGNATURE,  // Signature
+        sizeof(ACPI_PPTT),    // Length
+        ACPI_PPTT_REVISION,   // Revision
+        0,                    // Checksum
+        ACPI_KONA_ID,         // OEMID
+        ACPI_KONA_TABLE_ID,   // OEMTableID
+        ACPI_KONA_REVISION,   // OEMRevision
+        ACPI_CREATOR_ID,      // CreatorID
+        ACPI_CREATOR_REVISION // CreatorRevision
+    },
+
+    // L3 Cache Details
+    {
+        ACPI_CACHE_TYPE,                   // Type;
+        sizeof(ACPI_CACHE_TYPE_STRUCTURE), // Length;
+        0,                                 // Reserved;
+        0,                                 // flags
+        0,                                 // NextLevelCache
+        0,                                 // Size;
+        0,                                 // NumOfSets;
+        0,                                 // Associativity
+        0,                                 // Attributes
+        0,                                 // LineSize;
+    },
+
+    // id type structure
+    {
+        ACPI_ID_TYPE,                   // Type
+        sizeof(ACPI_ID_TYPE_STRUCTURE), // Length;
+        0,                              // Reserved;
+        0,                              // vendorId;
+        0,                              // level1Id;
+        0,                              // level2Id;
+        0,                              // majorRev;
+        0,                              // minorRev;
+        0,                              // spinRev;
+    },
+
+    // L3 Node
+    {
+        ACPI_PROCESSOR_NODE,                      // type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE_L3), // length
+        0x00,                                     // Reserved
+        0x01,                                     // Flags
+        0,                                        // Parent
+        0x00,                                     // AcpiProcessorId
+        2,                                        // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL3U),
+        offsetof(ACPI_PPTT, SocId),
+    },
+
+    // L2 unified Cache
+    {
+        ACPI_CACHE_TYPE,                   // Type
+        sizeof(ACPI_CACHE_TYPE_STRUCTURE), // Length
+        0x00,                              // Reserved
+        0,                                 // flags
+        0,                                 // NextLevelCache
+        0,                                 // Size
+        0,                                 // NumOfSets
+        0,                                 // Associativity
+        0,                                 // Attributes
+        0,                                 // LineSize
+    },
+
+    // L1 Data Cache
+    {
+        ACPI_CACHE_TYPE,                                   // Type
+        sizeof(ACPI_CACHE_TYPE_STRUCTURE),                 // Length
+        0x00,                                              // Reserved
+        0,                                                 // flags
+        offsetof(ACPI_PPTT, localCacheL2U), // NextLevelCache
+        0,                                                 // Size
+        0,                                                 // NumOfSets
+        0,                                                 // Associativity
+        0,                                                 // Attributes
+        0,                                                 // LineSize
+    },
+
+    // L1 Instruction Cache
+    {
+        ACPI_CACHE_TYPE,                                   // Type
+        sizeof(ACPI_CACHE_TYPE_STRUCTURE),                 // Length
+        0x00,                                              // Reserved
+        0,                                                 // flags
+        offsetof(ACPI_PPTT, localCacheL2U), // NextLevelCache
+        0,                                                 // Size
+        0,                                                 // NumOfSets
+        0,                                                 // Associativity
+        0,                                                 // Attributes
+        0,                                                 // LineSize
+    },
+
+    // LocalPpt0
+    {
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x00,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt1
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x01,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt2
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x02,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt3
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x03,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt4
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x04,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt5
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x05,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt6
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x06,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+
+    // LocalPpt7
+    {
+        // node structure
+        ACPI_PROCESSOR_NODE,                           // Type
+        sizeof(ACPI_PROCESSOR_NODE_STRUCTURE),         // Length
+        0x00,                                          // Reserved
+        0x02,                                          // Flags
+        offsetof(ACPI_PPTT, NodeForL3), // Parent
+        0x07,                                          // AcpiProcessorId
+        2,                                             // numPrivateResources
+        offsetof(ACPI_PPTT, localCacheL1D),
+        offsetof(ACPI_PPTT, localCacheL1I),
+    },
+};
+#pragma pack(pop)

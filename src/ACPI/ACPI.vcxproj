@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Default|ARM64">
+      <Configuration>Default</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{915864d9-9377-4927-a56b-b417e12bb6b1}</ProjectGuid>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <Configuration Condition="'$(Configuration)' == ''">Default</Configuration>
+    <Platform Condition="'$(Platform)' == ''">ARM64</Platform>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(SolutionDir)\common.props"/>
+  </ImportGroup>
+  <PropertyGroup>
+    <BuildScript>build_acpi.bat</BuildScript>
+  </PropertyGroup>
+  <Target Name="Build">
+    <Message Text="Running $(BuildScript)"/>
+    <Exec Command="call &quot;$(VSINSTALLDIR)\VC\Auxiliary\Build\vcvarsall.bat&quot; x86_arm64 &amp;&amp; set INTDIR=$(IntDir)&amp;&amp; set OUTDIR=$(OutDir)&amp;&amp; $(BuildScript)"/>
+  </Target>
+  <ItemGroup />
+</Project>

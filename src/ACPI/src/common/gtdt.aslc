@@ -1,0 +1,65 @@
+#include "ACPI.h"
+
+#pragma pack(push, 1)
+
+ACPI_GTDT Gtdt = {
+    //------------------------------------------------------------------------
+    // GTDT Header
+    //------------------------------------------------------------------------
+    ACPI_GTDT_SIGNATURE,        // Signature (4 bytes)
+    sizeof(ACPI_GTDT),          // Length (4 bytes)
+    ACPI_GTDT_REVISION,         // Revision (1 byte)
+    0x00,                       // Checksum calculated at runtime (1 byte)
+    ACPI_KONA_ID,               // OEMID is a 6 bytes long field (6 bytes)
+    ACPI_KONA_TABLE_ID,         // OEM table identification (8 bytes)
+    ACPI_KONA_REVISION,         // OEM revision number (4 bytes)
+    ACPI_CREATOR_ID,            // ASL compiler vendor ID (4 bytes)
+    ACPI_CREATOR_REVISION,      // ASL compiler revision number (4 bytes)
+
+    //------------------------------------------------------------------------
+    // Content
+    //------------------------------------------------------------------------
+
+    0xFFFFFFFFFFFFFFFF,                // CntControlBase Physical Address (8 bytes)
+    0,                                 // GlobalFlags - memory mapped, level (4 bytes)
+    29,                                // SecurePL1GSIV (4 bytes)
+    0,                                 // SecurePL1Flags - level, active high (4 bytes)
+    30,                                // NonSecurePL1GSIV (4 bytes)
+    0,                                 // NonSecurePL1Flags - level, active high (4 bytes)
+    27,                                // VirtualGSIV (4 bytes)
+    0,                                 // VirtualFlags - level, active high (4 bytes)
+    26,                                // NonSecurePL2GSIV - not really supported (4 bytes)
+    0,                                 // NonSecurePL2Flags - level, active high (4 bytes)
+
+    // ------------------------------------------------------------------------
+    // Platform timer definitions
+    // ------------------------------------------------------------------------
+
+    0xFFFFFFFFFFFFFFFF,                // CntReadBase Phys Addr (8 bytes)
+    1,                                 // Platform Timer Count (4 bytes)
+    96,                                // Platform timer offset (4 bytes)
+    {
+        {
+            0,                         // GT block type (1 byte)
+            60,                        // Length, 20 + n * 40 (2 bytes)
+            0,                         // Reserved (1 byte)
+            0x17C20000,                // Physical address for CntControlBase (8 bytes)
+            1,                         // Number of timers (4 bytes)
+            20,                        // Offset to the platform timer from start of this struct (4 bytes)
+
+            {{
+                0,                     // Frame number (1 byte)
+                0,0,0,                 // Reserved (3 bytes)
+                0x17C21000,            // CntBase phys addr (8 bytes)
+                0x17C22000,            // CntEl0Base phys addr (8 bytes)
+                40,                    // GSIV for physical timer (4 bytes)
+                0,                     // Trigger for physical timer - Level High (4 bytes)
+                38,                    // GSIV for virtual timer, 0 if not implemented (4 bytes)
+                0,                     // Flags for virtual timer - Level High (4 bytes)
+                2,                     // Common flags; 0x2 = always-on (4 bytes)
+            }}
+        }
+    }
+};
+
+#pragma pack(pop)

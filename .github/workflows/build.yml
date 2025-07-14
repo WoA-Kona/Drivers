@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+env:
+  SOLUTION_FILE_PATH: .\build\Kona-Drivers.sln
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        PLATFORM: [ARM64]
+        CONFIGURATION: [Debug, Release]
+    env:
+      DRIVER_OUTPUT_DIR: build\${{matrix.PLATFORM}}\${{matrix.CONFIGURATION}}\Output
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: x64
+
+    - name: Build solution
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{matrix.CONFIGURATION}} /p:Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Bundle symbols
+      run: |
+        Get-ChildItem -Path $env:DRIVER_OUTPUT_DIR -Directory | ForEach-Object {
+            if (Test-Path -Path "$env:DRIVER_OUTPUT_DIR\$($_.Name).pdb") {
+                Copy-Item -Path "$env:DRIVER_OUTPUT_DIR\$($_.Name).pdb" -Destination $_.FullName
+            }
+        }
+
+    - name: Get version tag
+      id: get_version_tag
+      run: |
+        $version = git describe --tags --always
+        Write-Output "version=$($version)" >> $env:GITHUB_OUTPUT
+
+    - name: Upload testsigned drivers
+      uses: actions/upload-artifact@v4
+      with:
+        name: KonaDrivers_${{matrix.PLATFORM}}_${{matrix.CONFIGURATION}}_${{steps.get_version_tag.outputs.version}}_testsigned
+        path: ${{env.DRIVER_OUTPUT_DIR}}/*/

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACPI", "..\src\ACPI\ACPI.vcxproj", "{915864D9-9377-4927-A56B-B417E12BB6B1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPIO", "..\src\GPIO\GPIO.vcxproj", "{BBACC507-BEAB-4E8A-8965-04342896F18A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Release|ARM64 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{915864D9-9377-4927-A56B-B417E12BB6B1}.Debug|ARM64.ActiveCfg = Default|ARM64
+		{915864D9-9377-4927-A56B-B417E12BB6B1}.Debug|ARM64.Build.0 = Default|ARM64
+		{915864D9-9377-4927-A56B-B417E12BB6B1}.Release|ARM64.ActiveCfg = Default|ARM64
+		{915864D9-9377-4927-A56B-B417E12BB6B1}.Release|ARM64.Build.0 = Default|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Debug|ARM64.Build.0 = Debug|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Release|ARM64.ActiveCfg = Release|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Release|ARM64.Build.0 = Release|ARM64
+		{BBACC507-BEAB-4E8A-8965-04342896F18A}.Release|ARM64.Deploy.0 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88CA3DEA-CAD4-45E4-AFC6-7A678011ECDD}
+	EndGlobalSection
+EndGlobal

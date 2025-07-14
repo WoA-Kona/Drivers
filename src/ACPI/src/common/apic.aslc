@@ -1,0 +1,226 @@
+#include "ACPI.h"
+
+#pragma pack(push, 1)
+
+ACPI_APIC Apic =
+{
+    // Header
+    {
+        {
+            ACPI_APIC_SIGNATURE,  // Signature
+            sizeof(ACPI_APIC),    // Length
+            ACPI_APIC_REVISION,   // Revision
+            0,                    // Checksum
+            ACPI_KONA_ID,         // OEMID
+            ACPI_KONA_TABLE_ID,   // OEMTableID
+            ACPI_KONA_REVISION,   // OEMRevision
+            ACPI_CREATOR_ID,      // CreatorID
+            ACPI_CREATOR_REVISION // CreatorRevision
+        },
+        0x00000000, // LocalApicAddress
+        0           // Flags
+    },
+
+    // Core0 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x00,                                        // Identifier
+        0x00,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000000,                          // MPIDR
+        0x00,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core1 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x01,                                        // Identifier
+        0x01,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000100,                          // MPIDR
+        0x00,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core2 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x02,                                        // Identifier
+        0x02,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000200,                          // MPIDR
+        0x00,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core3 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x03,                                        // Identifier
+        0x03,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x0000,                                      // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000300,                          // MPIDR
+        0x00,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core4 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x04,                                        // Identifier
+        0x04,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000400,                          // MPIDR
+        0x01,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core5 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x05,                                        // Identifier
+        0x05,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000500,                          // MPIDR
+        0x01,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core6 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x06,                                        // Identifier
+        0x06,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000600,                          // MPIDR
+        0x01,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Core7 GIC
+    {
+        ACPI_PROCESSOR_LOCAL_GIC,                    // Type
+        sizeof(ACPI_PROCESSOR_LOCAL_APIC_STRUCTURE), // Length
+        0x00,                                        // Reserved
+        0x07,                                        // Identifier
+        0x07,                                        // AcpiProcessorId
+        PLGF_ENABLED,                                // Flags
+        0x00,                                        // ParkingProtocolVersion
+        (16 + 7),                                    // PerformanceInterruptGsi
+        0x0000000000000000,                          // MailboxPhysicalAddress
+        0x0000000000000000,                          // ControllerPhysicalAddress
+        0x0000000000000000,                          // GIC virtual CPU interface registers.
+        0x0000000000000000,                          // GIC virtual interface control block registers.
+        0x19,                                        // GVIS for Virtual GIC maintenance interrupt.
+        0x0000000000000000,                          // 64-bit address of the GIC Redistributor.
+        0x0000000000000700,                          // MPIDR
+        0x01,                                        // ProcessorPowerEfficiencyClass
+        {0x00, 0x00, 0x00}                           // Reserved
+    },
+
+    // Distributor
+    {
+        ACPI_GIC_DISTRIBUTOR,                   // Type
+        sizeof(ACPI_GIC_DISTRIBUTOR_STRUCTURE), // Length
+        0,                                      // Reserved1
+        0,                                      // Identfier
+        0x17A00000,                             // ControllerPhysicalAddress
+        0,                                      // GsivBase
+        3,                                      // GicVersion
+        0                                       // Reserved
+    },
+
+    // ReDistributor
+    {
+        ACPI_GIC_REDISTRIBUTOR,                   // Type
+        sizeof(ACPI_GIC_REDISTRIBUTOR_STRUCTURE), // Length
+        0,                                        // Reserved
+        0x17A60000,                               // RedistributorPhysicalAddress
+        0x100000                                  // Length
+    },
+
+    // MSI Frame0
+    {
+        ACPI_GIC_MSI_FRAME,                   // Type
+        sizeof(ACPI_GIC_MSI_FRAME_STRUCTURE), // Length
+        0x0,                                  // Reserved1
+        0x0,                                  // Identfier
+        0x17A10000,                           // ControllerPhysicalAddress
+        0x1,                                  // Flags
+        0x80,                                 // SPI_Count
+        0x340                                 // SPI_Base
+    },
+};
+
+#pragma pack(pop)

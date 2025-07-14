@@ -1,0 +1,54 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ProviderName%
+CatalogFile = GPIO.cat
+DriverVer   =
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+GPIO.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTARM64.10.0...16299
+
+[Standard.NTARM64.10.0...16299]
+%GPIO.DeviceDesc% = GPIO_Device, ACPI\KONA1001
+
+[GPIO_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+GPIO.sys
+
+;-------------- Service installation
+[GPIO_Device.NT.Services]
+AddService = GPIO,%SPSVCINST_ASSOCSERVICE%, GPIO_Service_Inst
+
+; -------------- GPIO driver install sections
+[GPIO_Service_Inst]
+DisplayName    = %GPIO.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 0               ; SERVICE_BOOT_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\GPIO.sys
+Dependencies  = GPIOClx0101
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ProviderName = "WoA-Kona authors"
+ManufacturerName = "Qualcomm"
+DiskName = "Qualcomm GPIO Controller Installation Disk"
+GPIO.DeviceDesc = "Qualcomm GPIO Controller"
+GPIO.SVCDESC = "Qualcomm GPIO Service"

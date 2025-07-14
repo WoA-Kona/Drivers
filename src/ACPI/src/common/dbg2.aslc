@@ -1,0 +1,114 @@
+#include "ACPI.h"
+
+#define USB_DEVICE_NAME "\\_SB.URS0"
+
+#define DEBUG_DEVICE_PORT_TYPE_NET 0x8003
+
+#define DEBUG_DEVICE_PORT_SUBTYPE_NET_QCOM 0x5143
+
+#define DEBUG_DEVICE_OEM_PORT_USBFN_SYNOPSYS 0x0005
+
+#define offsetof(s,m) (UINT32)(UINT64)&(((s *)0)->m)
+
+#pragma pack(push, 1)
+
+ACPI_DBG2_IMPL DBG2 =
+{
+    {
+        {
+            ACPI_DBG2_SIGNATURE,    // Signature
+            sizeof(ACPI_DBG2_IMPL), // Length
+            ACPI_DBG2_REVISION,     // Revision
+            0,                      // Checksum
+            ACPI_KONA_ID,           // OEMID[ACPI_MAX_OEM_ID]
+            ACPI_KONA_TABLE_ID,     // OEMTableID[ACPI_MAX_TABLE_ID]
+            ACPI_KONA_REVISION,     // OEMRevision
+            ACPI_CREATOR_ID,        // CreatorID[ACPI_MAX_CREATOR_ID]
+            ACPI_CREATOR_REVISION   // CreatorRev
+        },
+
+        sizeof(ACPI_DBG2),
+        1
+    },
+
+    {
+        {
+            1,                                             // Revision
+            sizeof(ACPI_DBI2_IMPL),                        // Length
+            2,                                             // BaseAddressRegisterCount
+            sizeof(USB_DEVICE_NAME),                       // NameSpaceStringLength
+            offsetof(ACPI_DBI2_IMPL, NameSpaceString),     // NameSpaceStringOffset
+            sizeof(ACPI_DB_OEM_DATA),                      // OemDataLength
+            offsetof(ACPI_DBI2_IMPL, OemData),             // OemDataOffset
+            DEBUG_DEVICE_PORT_TYPE_NET,                    // PortType
+            DEBUG_DEVICE_PORT_SUBTYPE_NET_QCOM,            // PortSubtype
+            0,                                             // Reserved
+            offsetof(ACPI_DBI2_IMPL, BaseAddressRegister), // BaseAddressRegisterOffset
+            offsetof(ACPI_DBI2_IMPL, AddressSize)          // AddressSizeOffset
+        },
+        {
+            {
+                // BaseAddressRegister
+                ACPI_SYSTEM_MEMORY,
+                32,
+                0,
+                32,
+                0xA600000 // DWC3 base
+            },
+            {
+                // BaseAddressRegister
+                ACPI_SYSTEM_MEMORY,
+                32,
+                0,
+                32,
+                0xA600000 // DWC3 base
+            }
+        },
+        {
+            0xFFFFF, // AddressSize
+            0x1000,  // AddressSize
+        },
+        USB_DEVICE_NAME, // NameSpaceString
+        {
+            // OEM Data
+            DEBUG_DEVICE_OEM_PORT_USBFN_SYNOPSYS, // Controller type
+            0,
+            'FIX2',
+            3, // Number of writes
+            {
+                {
+                    0,                                              // BaseAddressRegister
+                    2,                                              // Phase
+                    0,                                              // Reserved
+                    0xC700,                                         // Offset
+                    0xfffffff8,                                     // AndValue
+                    0x0                                             // OrValue
+                },
+                {
+                    0,                                              // BaseAddressRegister
+                    2,                                              // Phase
+                    0,                                              // Reserved
+                    0xf8810,                                        // Offset
+                    0,                                              // AndValue
+                    0x10100000                                      // OrValue
+                },
+                {
+                    0,                                              // BaseAddressRegister
+                    2,                                              // Phase
+                    0,                                              // Reserved
+                    0xF88B4,                                        // Offset
+                    0,                                              // AndValue
+                    0x00000DEB                                      // OrValue
+                }
+            },
+            {
+                0,     // USB Core Number - Primary (Core 0)
+                0,     // Reserved
+                0,     // Reserved
+                'USBC' // Signature
+            },
+        }
+    }
+};
+
+#pragma pack(pop)
