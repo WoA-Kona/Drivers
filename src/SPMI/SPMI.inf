@@ -1,0 +1,53 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ProviderName%
+CatalogFile = SPMI.cat
+DriverVer   =
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+SPMI.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTARM64.10.0...16299
+
+[Standard.NTARM64.10.0...16299]
+%SPMI.DeviceDesc% = SPMI_Device, ACPI\KONA1002
+
+[SPMI_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+SPMI.sys
+
+;-------------- Service installation
+[SPMI_Device.NT.Services]
+AddService = SPMI,%SPSVCINST_ASSOCSERVICE%, SPMI_Service_Inst
+
+; -------------- SPMI driver install sections
+[SPMI_Service_Inst]
+DisplayName    = %SPMI.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 0               ; SERVICE_BOOT_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\SPMI.sys
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ProviderName = "WoA-Kona authors"
+ManufacturerName = "Qualcomm"
+DiskName = "Qualcomm SPMI Bus Device Installation Disk"
+SPMI.DeviceDesc = "Qualcomm SPMI Bus Device"
+SPMI.SVCDESC = "Qualcomm SPMI Bus Service"

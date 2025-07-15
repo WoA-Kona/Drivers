@@ -6,5 +6,7 @@ DefinitionBlock("DSDT.AML", "DSDT", 0x02, "KONA  ", "KONA8250", 0)
         Include("ufs.asl")
         Include("usb.asl")
         Include("gpio.asl")
+        Include("spmi.asl")
+        Include("pmic.asl")
    }
 }

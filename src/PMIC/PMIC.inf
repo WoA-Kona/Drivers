@@ -1,0 +1,53 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ProviderName%
+CatalogFile = PMIC.cat
+DriverVer   =
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+PMIC.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTARM64.10.0...16299
+
+[Standard.NTARM64.10.0...16299]
+%PMIC.DeviceDesc% = PMIC_Device, ACPI\KONA1003
+
+[PMIC_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+PMIC.sys
+
+;-------------- Service installation
+[PMIC_Device.NT.Services]
+AddService = PMIC,%SPSVCINST_ASSOCSERVICE%, PMIC_Service_Inst
+
+; -------------- PMIC driver install sections
+[PMIC_Service_Inst]
+DisplayName    = %PMIC.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 0               ; SERVICE_BOOT_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\PMIC.sys
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ProviderName = "WoA-Kona authors"
+ManufacturerName = "Qualcomm"
+DiskName = "Qualcomm PMIC Device Installation Disk"
+PMIC.DeviceDesc = "Qualcomm PMIC Device"
+PMIC.SVCDESC = "Qualcomm PMIC Service"
