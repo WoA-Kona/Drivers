@@ -2,6 +2,7 @@
 #include <wdf.h>
 #include <initguid.h>
 #include <gpioclx.h>
+#include <TLMM.h>
 
 #include "trace.h"
 
@@ -24,10 +25,12 @@ EXTERN_C_START
 
 #define INTR_TARGET_MASK GENMASK(2, 0)
 #define PULL_MASK GENMASK(1, 0)
+#define MUX_MASK GENMASK(5, 2)
 
 #define PULL_BIT 0
 #define IN_BIT   0
 #define OUT_BIT  1
+#define MUX_BIT  2
 #define OE_BIT   9
 
 #define INTR_STATUS_BIT 0
@@ -77,5 +80,11 @@ GPIO_CLIENT_UNMASK_INTERRUPT GPIOUnmaskInterrupt;
 
 GPIO_CLIENT_QUERY_ACTIVE_INTERRUPTS GPIOQueryActiveInterrupts;
 GPIO_CLIENT_CLEAR_ACTIVE_INTERRUPTS GPIOClearActiveInterrupts;
+
+NTSTATUS GPIOConfigurePinMux(
+    PVOID Context,
+    PIN_NUMBER pin,
+    UCHAR function
+    );
 
 EXTERN_C_END

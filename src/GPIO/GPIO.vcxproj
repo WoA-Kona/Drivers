@@ -14,6 +14,7 @@
     <ClCompile Include="Driver.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\TLMM.h" />
     <ClInclude Include="Driver.h" />
     <ClInclude Include="Trace.h" />
   </ItemGroup>
@@ -52,6 +53,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)\common.props" />
   </ImportGroup>
+  <PropertyGroup>
+    <IncludePath>..\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <WppPreprocessorDefinitions>ENABLE_WPP_RECORDER=1;WPP_EMIT_FUNC_NAME</WppPreprocessorDefinitions>

@@ -144,6 +144,10 @@ GPIOEvtDeviceAdd(
     if (!NT_SUCCESS(status))
         goto Exit;
 
+    status = WdfDeviceCreateDeviceInterface(device, &GUID_TLMM_DEVINTERFACE, NULL);
+    if (!NT_SUCCESS(status))
+        goto Exit;
+
     status = GPIO_CLX_ProcessAddDevicePostDeviceCreate(Driver, device);
     if (!NT_SUCCESS(status))
         goto Exit;
@@ -199,6 +203,39 @@ GPIOPrepareController(
         }
         if (!NT_SUCCESS(status))
             goto Exit;
+    }
+
+    {
+        TLMM_INTERFACE tlmmInterface;
+        WDF_QUERY_INTERFACE_CONFIG queryInterfaceConfig;
+        RtlZeroMemory(&tlmmInterface, sizeof(TLMM_INTERFACE));
+
+        tlmmInterface.Interface.Size = sizeof(TLMM_INTERFACE);
+        tlmmInterface.Interface.Version = 1;
+        tlmmInterface.Interface.Context = (PVOID)gpioContext;
+
+        tlmmInterface.Interface.InterfaceReference = WdfDeviceInterfaceReferenceNoOp;
+        tlmmInterface.Interface.InterfaceDereference = WdfDeviceInterfaceDereferenceNoOp;
+
+        tlmmInterface.ConfigurePinMux = GPIOConfigurePinMux;
+
+        WDF_QUERY_INTERFACE_CONFIG_INIT(
+            &queryInterfaceConfig,
+            (PINTERFACE)&tlmmInterface,
+            &GUID_TLMM_INTERFACE,
+            NULL
+        );
+
+        status = WdfDeviceAddQueryInterface(
+            Device,
+            &queryInterfaceConfig
+        );
+
+        if (!NT_SUCCESS(status))
+        {
+            TraceEvents(TRACE_LEVEL_ERROR, TRACE_DRIVER, "Failed to add interface");
+            goto Exit;
+        }
     }
 
 Exit:
@@ -760,6 +797,37 @@ GPIOClearActiveInterrupts(
         Write32((PULONG)(gpioContext->Base + pinOffset), 0);
     }
 
+    TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "%!FUNC! Exit");
+    return STATUS_SUCCESS;
+}
+
+NTSTATUS GPIOConfigurePinMux(
+    PVOID Context,
+    PIN_NUMBER pinNumber,
+    UCHAR function
+    )
+{
+    NTSTATUS status;
+    PGPIO_DEVICE_CONTEXT gpioContext;
+    UINT32 pinOffset, ctlReg;
+
+    TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "%!FUNC! Entry");
+    gpioContext = (PGPIO_DEVICE_CONTEXT)Context;
+
+    if (function > 9) {
+        status = STATUS_INVALID_PARAMETER;
+        goto Exit;
+    }
+
+    pinOffset = GetTileOffsetByPin(pinNumber) + CTL_REG(pinNumber);
+    ctlReg = Read32((PULONG)(gpioContext->Base + pinOffset));
+
+    ctlReg &= ~MUX_MASK;
+    ctlReg |= function << MUX_BIT;
+
+    Write32((PULONG)(gpioContext->Base + pinOffset), ctlReg);
+
+Exit:
     TraceEvents(TRACE_LEVEL_INFORMATION, TRACE_DRIVER, "%!FUNC! Exit");
     return STATUS_SUCCESS;
 }

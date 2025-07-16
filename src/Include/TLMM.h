@@ -1,0 +1,24 @@
+#pragma once
+
+typedef
+NTSTATUS
+(*PCONFIGURE_PIN_MUX) (
+    PVOID Context,
+    USHORT pin,
+    UCHAR function
+    );
+
+// {3D4F477B-4937-407B-9329-F7C88C9A0188}
+DEFINE_GUID(GUID_TLMM_DEVINTERFACE,
+    0x3d4f477b, 0x4937, 0x407b, 0x93, 0x29, 0xf7, 0xc8, 0x8c, 0x9a, 0x1, 0x88);
+
+
+// {C6001171-3090-4F79-B2C4-DC75E42FD1E9}
+DEFINE_GUID(GUID_TLMM_INTERFACE,
+    0xc6001171, 0x3090, 0x4f79, 0xb2, 0xc4, 0xdc, 0x75, 0xe4, 0x2f, 0xd1, 0xe9);
+
+typedef struct _TLMM_INTERFACE
+{
+    INTERFACE Interface;
+    PCONFIGURE_PIN_MUX ConfigurePinMux;
+} TLMM_INTERFACE, *PTLMM_INTERFACE;
